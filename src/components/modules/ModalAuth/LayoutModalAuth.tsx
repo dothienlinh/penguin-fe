@@ -26,17 +26,6 @@ const LayoutModalAuth: FC<LayoutModalAuthProps> = forwardRef(
 
     const handleBackdropClick = (e: MouseEvent<HTMLDivElement>) => {
       if (e.target === e.currentTarget) {
-        if (
-          targetModal.type === TARGET_MODAL.verifyEmailAndRegister.type ||
-          targetModal.type === TARGET_MODAL.verifyEmailAndResetPassword.type
-        ) {
-          setTargetModal((prev) => ({
-            ...prev,
-            isOpenModalConfirm: true,
-            backModal: undefined,
-          }));
-          return;
-        }
         handleClose();
       }
     };
@@ -69,10 +58,7 @@ const LayoutModalAuth: FC<LayoutModalAuthProps> = forwardRef(
           ref={ref}
           sx={{
             position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
+            inset: 0,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -134,7 +120,6 @@ const LayoutModalAuth: FC<LayoutModalAuthProps> = forwardRef(
         <Dialog
           open={!!targetModal.isOpenModalConfirm}
           onClose={handleCloseModalConfirm}
-          sx={{}}
         >
           <DialogTitle>Xác nhận</DialogTitle>
           <DialogContent>
@@ -153,7 +138,7 @@ const LayoutModalAuth: FC<LayoutModalAuthProps> = forwardRef(
                 if (targetModal.backModal) {
                   setTargetModal(TARGET_MODAL[targetModal.backModal]);
                 } else {
-                  handleClose();
+                  setTargetModal({ ...TARGET_MODAL.login, isOpenModal: false });
                 }
               }}
               sx={{ px: 1 }}

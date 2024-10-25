@@ -19,6 +19,7 @@ export const TARGET_MODAL: Record<TypeModal, TargetModal> = {
     title: "Chào mừng trở lại.",
     textFooter:
       'Nhấp vào "Đăng nhập" để đồng ý với Điều khoản dịch vụ của Penguin và xác nhận rằng Chính sách quyền riêng tư của Penguin áp dụng cho bạn.',
+    isOpenModal: true,
   },
   register: {
     type: TypeModal.register,
@@ -26,32 +27,38 @@ export const TARGET_MODAL: Record<TypeModal, TargetModal> = {
     title: "Tham gia Penguin.",
     textFooter:
       'Nhấp vào "Đăng ký" để đồng ý với Điều khoản dịch vụ của Penguin và xác nhận rằng Chính sách quyền riêng tư của Penguin áp dụng cho bạn.',
+    isOpenModal: true,
   },
   sendOTPCodeRegister: {
     type: TypeModal.sendOTPCodeRegister,
     title: "Đăng ký bằng email",
     component: <RegisterWithEmail />,
     textFooter: "Nhấp vào 'Tiếp tục' để tiếp tục đăng ký với email của bạn.",
+    isOpenModal: true,
   },
   loginWithEmail: {
     type: TypeModal.loginWithEmail,
     component: <LoginWithEmail />,
     title: "Đăng nhập bằng email",
+    isOpenModal: true,
   },
   verifyEmailAndRegister: {
     type: TypeModal.verifyEmailAndRegister,
     component: <VerifyEmailAndRegister />,
     title: "Xác thực email và đăng ký tài khoản.",
+    isOpenModal: true,
   },
   forgotPassword: {
     type: TypeModal.forgotPassword,
     component: <ForgotPassword />,
     title: "Quên mật khẩu?",
+    isOpenModal: true,
   },
   verifyEmailAndResetPassword: {
     type: TypeModal.verifyEmailAndResetPassword,
     component: <VerifyEmailAndResetPassword />,
     title: "Xác thực email và đặt lại mật khẩu.",
+    isOpenModal: true,
   },
 };
 

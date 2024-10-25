@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import React, { memo } from "react";
+import { memo } from "react";
 import AuthLayout from "../layouts/AuthLayout";
 import AuthModalProvider from "../providers/AuthModalProvider";
 

@@ -10,6 +10,7 @@ export interface TargetModal {
   textFooter?: string;
   email?: string;
   isOpenModalConfirm?: boolean;
+  isOpenModal: boolean;
   backModal?: TypeModal;
 }
 

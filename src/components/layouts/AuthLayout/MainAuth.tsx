@@ -2,9 +2,15 @@ import { Box, Container, Typography } from "@mui/material";
 import { memo } from "react";
 import Content from "../../common/Content";
 import Image from "../../common/Image";
-import ModalLogin from "../../modules/ModalAuth";
+import Button from "@/components/ui/Button";
+import useAuthModalContext from "@/libs/hooks/useAuthModalContext";
 
 const Main = () => {
+  const { setTargetModal } = useAuthModalContext();
+
+  const handleOpen = () =>
+    setTargetModal((prev) => ({ ...prev, isOpenModal: true }));
+
   return (
     <Content>
       <Container maxWidth="xl">
@@ -28,9 +34,8 @@ const Main = () => {
             </Typography>
           </Box>
 
-          <ModalLogin
-            textBtn="Bắt đầu đọc"
-            sxBtn={{
+          <Button
+            sx={{
               bgcolor: "#1A8917",
               borderColor: "#1A8917",
               px: 4,
@@ -41,7 +46,10 @@ const Main = () => {
                 borderColor: "#156D12",
               },
             }}
-          />
+            onClick={handleOpen}
+          >
+            Bắt đầu đọc
+          </Button>
         </Box>
 
         <Image
