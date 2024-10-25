@@ -1,44 +1,42 @@
 "use client";
 
-import Button from "@/components/ui/Button";
-import { Modal, SxProps } from "@mui/material";
-import React, { FC, memo, useCallback, useState } from "react";
+import { Modal } from "@mui/material";
+import { memo, useCallback, useEffect } from "react";
 import LayoutModalAuth from "./LayoutModalAuth";
 import useAuthModalContext from "@/libs/hooks/useAuthModalContext";
 import { TARGET_MODAL } from "@/components/providers/AuthModalProvider";
 
-interface ModalLoginProps {
-  textBtn: string;
-  sxBtn?: SxProps;
-  btnComponent?: React.ElementType;
-}
+const ModalAuth = () => {
+  const { setTargetModal, targetModal } = useAuthModalContext();
 
-const ModalLogin: FC<ModalLoginProps> = ({
-  textBtn,
-  sxBtn,
-  btnComponent: BtnComponent = Button,
-}) => {
-  const [open, setOpen] = useState(false);
-  const { setTargetModal } = useAuthModalContext();
-  const handleOpen = () => setOpen(true);
   const handleClose = useCallback(() => {
-    setTargetModal(TARGET_MODAL.login);
-    setOpen(false);
+    if (
+      targetModal.type === TARGET_MODAL.verifyEmailAndRegister.type ||
+      targetModal.type === TARGET_MODAL.verifyEmailAndResetPassword.type
+    ) {
+      setTargetModal((prev) => ({
+        ...prev,
+        isOpenModalConfirm: true,
+        backModal: undefined,
+      }));
+      return;
+    }
+
+    setTargetModal({ ...TARGET_MODAL.login, isOpenModal: false });
+  }, [setTargetModal, targetModal]);
+
+  useEffect(() => {
+    setTargetModal((prev) => ({ ...prev, isOpenModal: false }));
   }, [setTargetModal]);
 
   return (
     <>
-      <BtnComponent onClick={handleOpen} sx={sxBtn}>
-        {textBtn}
-      </BtnComponent>
-
       <Modal
-        open={open}
+        open={!!targetModal.isOpenModal}
         onClose={handleClose}
         sx={{
           "& .MuiModal-backdrop": {
-            bgcolor: "white",
-            opacity: "0.95 !important",
+            bgcolor: "#fffffff2",
           },
         }}
       >
@@ -48,4 +46,4 @@ const ModalLogin: FC<ModalLoginProps> = ({
   );
 };
 
-export default memo(ModalLogin);
+export default memo(ModalAuth);

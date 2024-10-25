@@ -2,9 +2,15 @@ import { Box, Container, Button as MuiButton } from "@mui/material";
 import Image from "next/image";
 import { memo } from "react";
 import Link from "../../common/Link";
-import ModalLogin from "../../modules/ModalAuth";
+import Button from "@/components/ui/Button";
+import useAuthModalContext from "@/libs/hooks/useAuthModalContext";
 
 const Header = () => {
+  const { setTargetModal } = useAuthModalContext();
+
+  const handleOpen = () =>
+    setTargetModal((prev) => ({ ...prev, isOpenModal: true }));
+
   return (
     <header>
       <Box sx={{ borderBottom: "1px solid #000" }}>
@@ -26,27 +32,27 @@ const Header = () => {
               />
             </Link>
             <Box sx={{ display: "flex", gap: 2 }}>
-              <ModalLogin
-                textBtn="Viết"
-                btnComponent={MuiButton}
-                sxBtn={{
+              <MuiButton
+                sx={{
                   display: { xs: "none", sm: "block" },
                   color: "black",
-                  bgcolor: "unset !important",
                 }}
-              />
+                onClick={handleOpen}
+              >
+                Viết
+              </MuiButton>
 
-              <ModalLogin
-                textBtn="Đăng nhập"
-                btnComponent={MuiButton}
-                sxBtn={{
+              <MuiButton
+                sx={{
                   display: { xs: "none", sm: "block" },
                   color: "black",
-                  bgcolor: "unset !important",
                 }}
-              />
+                onClick={handleOpen}
+              >
+                Đăng nhập
+              </MuiButton>
 
-              <ModalLogin textBtn="Bắt đầu" />
+              <Button onClick={handleOpen}>Bắt đầu</Button>
             </Box>
           </Box>
         </Container>
