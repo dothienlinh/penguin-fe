@@ -3,13 +3,13 @@ import Image from "next/image";
 import { memo } from "react";
 import Link from "../../common/Link";
 import Button from "@/components/ui/Button";
-import useAuthModalContext from "@/libs/hooks/useAuthModalContext";
+import { useAppDispatch } from "@/libs/store/hooks";
+import { setOpenModal } from "@/libs/store/slices/modalAuthSlice";
 
 const Header = () => {
-  const { setTargetModal } = useAuthModalContext();
+  const dispatch = useAppDispatch();
 
-  const handleOpen = () =>
-    setTargetModal((prev) => ({ ...prev, isOpenModal: true }));
+  const handleOpen = () => dispatch(setOpenModal(true));
 
   return (
     <header>

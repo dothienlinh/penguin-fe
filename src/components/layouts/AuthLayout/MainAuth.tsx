@@ -3,13 +3,14 @@ import { memo } from "react";
 import Content from "../../common/Content";
 import Image from "../../common/Image";
 import Button from "@/components/ui/Button";
-import useAuthModalContext from "@/libs/hooks/useAuthModalContext";
+import { TARGET_MODAL } from "@/libs/constants";
+import { useAppDispatch } from "@/libs/store/hooks";
+import { setModalAuth } from "@/libs/store/slices/modalAuthSlice";
 
 const Main = () => {
-  const { setTargetModal } = useAuthModalContext();
+  const dispatch = useAppDispatch();
 
-  const handleOpen = () =>
-    setTargetModal((prev) => ({ ...prev, isOpenModal: true }));
+  const handleOpen = () => dispatch(setModalAuth(TARGET_MODAL.login));
 
   return (
     <Content>

@@ -1,15 +1,14 @@
-"use client";
-
 import InputForm from "@/components/common/InputForm";
-import { TARGET_MODAL } from "@/components/providers/AuthModalProvider";
 import Button from "@/components/ui/Button";
 import Loading from "@/components/ui/Loading";
 import { TypographyAuth } from "@/components/ui/Typography";
+import { TARGET_MODAL } from "@/libs/constants";
 import { ETypeSnackbar } from "@/libs/enums";
 import { fetchApi } from "@/libs/helpers/fetchApi";
-import useAuthModalContext from "@/libs/hooks/useAuthModalContext";
 import useSnackbar from "@/libs/hooks/useSnackbar";
 import { sendOTPCodeRegister } from "@/libs/services/apis/mail";
+import { useAppDispatch } from "@/libs/store/hooks";
+import { setModalAuth } from "@/libs/store/slices/modalAuthSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Box, Typography } from "@mui/material";
@@ -27,6 +26,7 @@ const schema = yup.object({
 
 const RegisterWithEmail = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useAppDispatch();
   const {
     control,
     handleSubmit,
@@ -37,7 +37,6 @@ const RegisterWithEmail = () => {
       email: "",
     },
   });
-  const { setTargetModal } = useAuthModalContext();
   const { handleOpenSnackbar } = useSnackbar();
 
   const onSubmit = async (data: IRegisterWithEmail) => {
@@ -49,10 +48,12 @@ const RegisterWithEmail = () => {
       return;
     }
 
-    setTargetModal({
-      ...TARGET_MODAL.verifyEmailAndRegister,
-      email: data.email,
-    });
+    dispatch(
+      setModalAuth({
+        ...TARGET_MODAL.verifyEmailAndRegister,
+        email: data.email,
+      })
+    );
   };
 
   return (
@@ -125,7 +126,7 @@ const RegisterWithEmail = () => {
           >
             <TypographyAuth
               component={"span"}
-              onClick={() => setTargetModal(TARGET_MODAL.register)}
+              onClick={() => dispatch(setModalAuth(TARGET_MODAL.register))}
             >
               <ArrowBackIosIcon sx={{ color: "#1a8917", fontSize: 14 }} />
               Tất cả các tùy chọn đăng ký

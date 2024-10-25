@@ -1,6 +1,5 @@
 import { IBackendRes } from "@/libs/interfaces";
-import axiosInstance from "../axiosInstance";
-import { API_URL } from "@/libs/constants";
+import axiosInstance, { API_URL } from "../axiosInstance";
 import { IUser } from "@/libs/store/slices/profileSlice";
 
 export interface AccessTokenResponse {

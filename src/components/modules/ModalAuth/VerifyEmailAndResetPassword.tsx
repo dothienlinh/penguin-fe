@@ -1,17 +1,20 @@
-"use client";
-
 import InputForm from "@/components/common/InputForm";
 import InputPasswordForm from "@/components/common/InputPasswordForm";
-import { TARGET_MODAL } from "@/components/providers/AuthModalProvider";
 import Button from "@/components/ui/Button";
 import Loading from "@/components/ui/Loading";
 import { TypographyAuth } from "@/components/ui/Typography";
+import { TARGET_MODAL } from "@/libs/constants";
 import { ETypeSnackbar, TypeModal } from "@/libs/enums";
 import { fetchApi } from "@/libs/helpers/fetchApi";
-import useAuthModalContext from "@/libs/hooks/useAuthModalContext";
 import useSnackbar from "@/libs/hooks/useSnackbar";
 import { callVerifyEmailAndResetPassword } from "@/libs/services/apis/auth";
 import { sendOTPCodeForgotPassword } from "@/libs/services/apis/mail";
+import { useAppDispatch, useAppSelector } from "@/libs/store/hooks";
+import {
+  setBackModalAndModalConfirm,
+  setModalAuth,
+  setTitleAndEmail,
+} from "@/libs/store/slices/modalAuthSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Box, Typography } from "@mui/material";
@@ -33,7 +36,8 @@ const schema = yup.object({
 
 const VerifyEmailAndResetPassword = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { targetModal, setTargetModal } = useAuthModalContext();
+  const targetModal = useAppSelector((state) => state.modalAuth);
+  const dispatch = useAppDispatch();
   const {
     control,
     handleSubmit,
@@ -58,7 +62,7 @@ const VerifyEmailAndResetPassword = () => {
     );
 
     if (res.data) {
-      setTargetModal(TARGET_MODAL.loginWithEmail);
+      dispatch(setModalAuth(TARGET_MODAL.loginWithEmail));
     } else {
       handleOpenSnackbar(res.message, ETypeSnackbar.ERROR);
     }
@@ -69,11 +73,7 @@ const VerifyEmailAndResetPassword = () => {
   const resendCode = async () => {
     setIsLoading(true);
     const email = targetModal.email as string;
-    setTargetModal((prev) => ({
-      ...prev,
-      title: "Đang gửi lại code.",
-      email,
-    }));
+    dispatch(setTitleAndEmail({ title: "Đang gửi lại code.", email }));
     const res = await fetchApi(() => sendOTPCodeForgotPassword({ email }));
 
     if (res.data) {
@@ -81,20 +81,17 @@ const VerifyEmailAndResetPassword = () => {
     } else {
       handleOpenSnackbar(res.message, ETypeSnackbar.ERROR);
     }
-    setTargetModal((prev) => ({
-      ...prev,
-      title: TARGET_MODAL.verifyEmailAndResetPassword.title,
-      email,
-    }));
+    dispatch(setTitleAndEmail({ title: "Đang gửi lại code.", email }));
     setIsLoading(false);
   };
 
   const handleOpenModalConfirm = () => {
-    setTargetModal((prev) => ({
-      ...prev,
-      isOpenModalConfirm: true,
-      backModal: TypeModal.forgotPassword,
-    }));
+    dispatch(
+      setBackModalAndModalConfirm({
+        isOpenModalConfirm: true,
+        backModal: TypeModal.loginWithEmail,
+      })
+    );
   };
 
   return (

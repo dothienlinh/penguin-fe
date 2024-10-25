@@ -1,15 +1,15 @@
 import InputForm from "@/components/common/InputForm";
 import InputPasswordForm from "@/components/common/InputPasswordForm";
-import { TARGET_MODAL } from "@/components/providers/AuthModalProvider";
 import Button from "@/components/ui/Button";
 import Loading from "@/components/ui/Loading";
 import { TypographyAuth } from "@/components/ui/Typography";
+import { TARGET_MODAL } from "@/libs/constants";
 import { ETypeSnackbar } from "@/libs/enums";
 import { fetchApi } from "@/libs/helpers/fetchApi";
-import useAuthModalContext from "@/libs/hooks/useAuthModalContext";
 import useSnackbar from "@/libs/hooks/useSnackbar";
 import { callGetProfile, callLoginWithEmail } from "@/libs/services/apis/auth";
 import { useAppDispatch } from "@/libs/store/hooks";
+import { setModalAuth } from "@/libs/store/slices/modalAuthSlice";
 import { setProfile } from "@/libs/store/slices/profileSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -30,7 +30,6 @@ interface ILoginWithEmail {
 
 const LoginWithEmail = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { setTargetModal } = useAuthModalContext();
   const { handleOpenSnackbar } = useSnackbar();
   const dispatch = useAppDispatch();
   const {
@@ -146,14 +145,16 @@ const LoginWithEmail = () => {
             >
               <TypographyAuth
                 component={"span"}
-                onClick={() => setTargetModal(TARGET_MODAL.login)}
+                onClick={() => dispatch(setModalAuth(TARGET_MODAL.login))}
               >
                 <ArrowBackIosIcon sx={{ color: "#1a8917", fontSize: 14 }} />
                 Tất cả các tùy chọn đăng nhập
               </TypographyAuth>
               <TypographyAuth
                 component={"span"}
-                onClick={() => setTargetModal(TARGET_MODAL.forgotPassword)}
+                onClick={() =>
+                  dispatch(setModalAuth(TARGET_MODAL.forgotPassword))
+                }
               >
                 Quên mật khẩu?
               </TypographyAuth>

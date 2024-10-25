@@ -1,6 +1,11 @@
-import { TARGET_MODAL } from "@/components/providers/AuthModalProvider";
 import { TypographyAuth } from "@/components/ui/Typography";
-import useAuthModalContext from "@/libs/hooks/useAuthModalContext";
+import { TARGET_MODAL, COMPONENT_MAP } from "@/libs/constants";
+import { useAppDispatch, useAppSelector } from "@/libs/store/hooks";
+import {
+  setBackModalAndModalConfirm,
+  setModalAuth,
+  setOpenModalConfirm,
+} from "@/libs/store/slices/modalAuthSlice";
 import CloseIcon from "@mui/icons-material/Close";
 import {
   IconButton,
@@ -22,7 +27,10 @@ interface LayoutModalAuthProps {
 
 const LayoutModalAuth: FC<LayoutModalAuthProps> = forwardRef(
   ({ handleClose }, ref) => {
-    const { targetModal, setTargetModal } = useAuthModalContext();
+    const targetModal = useAppSelector((state) => state.modalAuth);
+    const dispatch = useAppDispatch();
+
+    const Component = COMPONENT_MAP[targetModal.componentKey];
 
     const handleBackdropClick = (e: MouseEvent<HTMLDivElement>) => {
       if (e.target === e.currentTarget) {
@@ -31,10 +39,26 @@ const LayoutModalAuth: FC<LayoutModalAuthProps> = forwardRef(
     };
 
     const handleCloseModalConfirm = () => {
-      setTargetModal((prev) => ({
-        ...prev,
-        isOpenModalConfirm: false,
-      }));
+      dispatch(setOpenModalConfirm(false));
+    };
+
+    const handleCloseModalConfirmSuccess = () => {
+      if (targetModal.backModal) {
+        dispatch(
+          setModalAuth({
+            ...TARGET_MODAL[targetModal.backModal],
+            isOpenModalConfirm: false,
+          })
+        );
+      } else {
+        dispatch(
+          setModalAuth({
+            ...TARGET_MODAL.login,
+            isOpenModal: false,
+            isOpenModalConfirm: false,
+          })
+        );
+      }
     };
 
     const handleClickIconClose = () => {
@@ -42,11 +66,12 @@ const LayoutModalAuth: FC<LayoutModalAuthProps> = forwardRef(
         targetModal.type === TARGET_MODAL.verifyEmailAndRegister.type ||
         targetModal.type === TARGET_MODAL.verifyEmailAndResetPassword.type
       ) {
-        setTargetModal((prev) => ({
-          ...prev,
-          isOpenModalConfirm: true,
-          backModal: undefined,
-        }));
+        dispatch(
+          setBackModalAndModalConfirm({
+            backModal: undefined,
+            isOpenModalConfirm: true,
+          })
+        );
       } else {
         handleClose();
       }
@@ -100,7 +125,7 @@ const LayoutModalAuth: FC<LayoutModalAuthProps> = forwardRef(
                 {targetModal.title}
               </Typography>
 
-              {targetModal.component}
+              {<Component />}
 
               {targetModal.textFooter && (
                 <Typography
@@ -132,15 +157,7 @@ const LayoutModalAuth: FC<LayoutModalAuthProps> = forwardRef(
               Hủy
             </TypographyAuth>
             <TypographyAuth
-              onClick={() => {
-                handleCloseModalConfirm();
-
-                if (targetModal.backModal) {
-                  setTargetModal(TARGET_MODAL[targetModal.backModal]);
-                } else {
-                  setTargetModal({ ...TARGET_MODAL.login, isOpenModal: false });
-                }
-              }}
+              onClick={handleCloseModalConfirmSuccess}
               sx={{ px: 1 }}
             >
               Đồng ý
