@@ -1,9 +1,12 @@
-import axios from "axios";
 import { Mutex } from "async-mutex";
-import { API_URL, NO_RETRY_HEADER } from "../constants";
-import { callRefreshToken } from "./apis/auth";
+import axios from "axios";
 import { makeStore } from "../store";
 import { clearProfile } from "../store/slices/profileSlice";
+import { callRefreshToken } from "./apis/auth";
+
+export const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+export const NO_RETRY_HEADER = "x-no-retry";
 
 const axiosInstance = axios.create({
   baseURL: API_URL,

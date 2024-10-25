@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import modalAuthReducer from "./slices/modalAuthSlice";
 import profileReducer from "./slices/profileSlice";
 import snackbarReducer from "./slices/snackbarSlice";
 
@@ -7,6 +8,7 @@ export const makeStore = () => {
     reducer: {
       profile: profileReducer,
       snackbar: snackbarReducer,
+      modalAuth: modalAuthReducer,
     },
   });
 };

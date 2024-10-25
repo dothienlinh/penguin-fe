@@ -1,7 +1,6 @@
 "use client";
 
 import { IProviderProps } from "@/libs/interfaces";
-import { RootState } from "@/libs/store";
 import { useAppDispatch, useAppSelector } from "@/libs/store/hooks";
 import { handleCloseSnackbar } from "@/libs/store/slices/snackbarSlice";
 import { Alert, Snackbar, SnackbarCloseReason } from "@mui/material";
@@ -9,9 +8,7 @@ import React, { FC } from "react";
 import GrowTransition from "../ui/GrowTransition";
 
 const Layout: FC<IProviderProps> = ({ children }) => {
-  const { open, message, type } = useAppSelector(
-    (state: RootState) => state.snackbar
-  );
+  const { open, message, type } = useAppSelector((state) => state.snackbar);
 
   const dispatch = useAppDispatch();
 

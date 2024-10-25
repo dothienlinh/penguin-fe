@@ -1,14 +1,15 @@
 import { ButtonAuth } from "@/components/ui/Button";
 import { FacebookIcon, GoogleIcon } from "@/components/ui/Icons";
+import { TARGET_MODAL } from "@/libs/constants";
 import { callLoginFacebook, callLoginGoogle } from "@/libs/services/apis/auth";
+import { useAppDispatch } from "@/libs/store/hooks";
+import { setModalAuth } from "@/libs/store/slices/modalAuthSlice";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import { Box, Typography } from "@mui/material";
 import { FC, memo } from "react";
-import useAuthModalContext from "@/libs/hooks/useAuthModalContext";
-import { TARGET_MODAL } from "@/components/providers/AuthModalProvider";
 
 const ContentModuleLogin: FC = () => {
-  const { setTargetModal } = useAuthModalContext();
+  const dispatch = useAppDispatch();
 
   return (
     <Box
@@ -30,7 +31,7 @@ const ContentModuleLogin: FC = () => {
         </ButtonAuth>
         <ButtonAuth
           variant="outlined"
-          onClick={() => setTargetModal(TARGET_MODAL.loginWithEmail)}
+          onClick={() => dispatch(setModalAuth(TARGET_MODAL.loginWithEmail))}
         >
           <EmailOutlinedIcon />
           <Typography sx={{ flexGrow: 1 }}>Đăng nhập với Email</Typography>
@@ -42,7 +43,7 @@ const ContentModuleLogin: FC = () => {
         <Typography
           component={"span"}
           sx={{ fontWeight: 700, cursor: "pointer", color: "#1a8917" }}
-          onClick={() => setTargetModal(TARGET_MODAL.register)}
+          onClick={() => dispatch(setModalAuth(TARGET_MODAL.register))}
         >
           Tạo một tài khoản
         </Typography>

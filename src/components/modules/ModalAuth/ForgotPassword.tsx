@@ -1,15 +1,14 @@
-"use client";
-
 import InputForm from "@/components/common/InputForm";
-import { TARGET_MODAL } from "@/components/providers/AuthModalProvider";
 import Button from "@/components/ui/Button";
 import Loading from "@/components/ui/Loading";
 import { TypographyAuth } from "@/components/ui/Typography";
+import { TARGET_MODAL } from "@/libs/constants";
 import { ETypeSnackbar } from "@/libs/enums";
 import { fetchApi } from "@/libs/helpers/fetchApi";
-import useAuthModalContext from "@/libs/hooks/useAuthModalContext";
 import useSnackbar from "@/libs/hooks/useSnackbar";
 import { sendOTPCodeForgotPassword } from "@/libs/services/apis/mail";
+import { useAppDispatch } from "@/libs/store/hooks";
+import { setEmail, setModalAuth } from "@/libs/store/slices/modalAuthSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Box, Typography } from "@mui/material";
@@ -27,7 +26,7 @@ const schema = yup.object({
 
 const ForgotPassword = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { setTargetModal } = useAuthModalContext();
+  const dispatch = useAppDispatch();
   const {
     control,
     handleSubmit,
@@ -41,18 +40,17 @@ const ForgotPassword = () => {
   const { handleOpenSnackbar } = useSnackbar();
 
   const onSubmit = async (data: IForgotPassword) => {
-    setTargetModal((prev) => ({
-      ...prev,
-      email: data.email,
-    }));
+    dispatch(setEmail(data.email));
     setIsLoading(true);
     const res = await fetchApi(() => sendOTPCodeForgotPassword(data));
 
     if (res?.data) {
-      setTargetModal({
-        ...TARGET_MODAL.verifyEmailAndResetPassword,
-        email: data.email,
-      });
+      dispatch(
+        setModalAuth({
+          ...TARGET_MODAL.verifyEmailAndResetPassword,
+          email: data.email,
+        })
+      );
     } else {
       handleOpenSnackbar(res.message, ETypeSnackbar.ERROR);
     }
@@ -134,7 +132,9 @@ const ForgotPassword = () => {
             >
               <TypographyAuth
                 component={"span"}
-                onClick={() => setTargetModal(TARGET_MODAL.loginWithEmail)}
+                onClick={() =>
+                  dispatch(setModalAuth(TARGET_MODAL.loginWithEmail))
+                }
               >
                 <ArrowBackIosIcon sx={{ color: "#1a8917", fontSize: 14 }} />
                 Quay lại

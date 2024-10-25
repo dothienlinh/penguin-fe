@@ -1,48 +1,47 @@
-"use client";
-
 import { Modal } from "@mui/material";
-import { memo, useCallback, useEffect } from "react";
+import { memo, useCallback } from "react";
 import LayoutModalAuth from "./LayoutModalAuth";
-import useAuthModalContext from "@/libs/hooks/useAuthModalContext";
-import { TARGET_MODAL } from "@/components/providers/AuthModalProvider";
+import { TARGET_MODAL } from "@/libs/constants";
+import { useAppDispatch, useAppSelector } from "@/libs/store/hooks";
+import {
+  setBackModalAndModalConfirm,
+  setOpenModal,
+} from "@/libs/store/slices/modalAuthSlice";
 
 const ModalAuth = () => {
-  const { setTargetModal, targetModal } = useAuthModalContext();
+  const dispatch = useAppDispatch();
+  const targetModal = useAppSelector((state) => state.modalAuth);
 
   const handleClose = useCallback(() => {
     if (
       targetModal.type === TARGET_MODAL.verifyEmailAndRegister.type ||
       targetModal.type === TARGET_MODAL.verifyEmailAndResetPassword.type
     ) {
-      setTargetModal((prev) => ({
-        ...prev,
-        isOpenModalConfirm: true,
-        backModal: undefined,
-      }));
+      console.log(1);
+      dispatch(
+        setBackModalAndModalConfirm({
+          backModal: undefined,
+          isOpenModalConfirm: true,
+        })
+      );
       return;
     }
 
-    setTargetModal({ ...TARGET_MODAL.login, isOpenModal: false });
-  }, [setTargetModal, targetModal]);
-
-  useEffect(() => {
-    setTargetModal((prev) => ({ ...prev, isOpenModal: false }));
-  }, [setTargetModal]);
+    dispatch(setOpenModal(false));
+  }, [dispatch, targetModal.type]);
 
   return (
-    <>
-      <Modal
-        open={!!targetModal.isOpenModal}
-        onClose={handleClose}
-        sx={{
-          "& .MuiModal-backdrop": {
-            bgcolor: "#fffffff2",
-          },
-        }}
-      >
-        <LayoutModalAuth handleClose={handleClose} />
-      </Modal>
-    </>
+    <Modal
+      open={targetModal.isOpenModal}
+      onClose={handleClose}
+      sx={{
+        "& .MuiModal-backdrop": {
+          bgcolor: "#fffffff2",
+        },
+      }}
+    >
+      <LayoutModalAuth handleClose={handleClose} />
+    </Modal>
   );
 };
 
