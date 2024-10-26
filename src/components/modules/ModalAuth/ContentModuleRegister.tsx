@@ -6,7 +6,7 @@ import { useAppDispatch } from "@/libs/store/hooks";
 import { setModalAuth } from "@/libs/store/slices/modalAuthSlice";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import { Box, Typography } from "@mui/material";
-import { FC } from "react";
+import { FC, memo } from "react";
 
 const ContentModuleRegister: FC = () => {
   const dispatch = useAppDispatch();
@@ -54,4 +54,4 @@ const ContentModuleRegister: FC = () => {
   );
 };
 
-export default ContentModuleRegister;
+export default memo(ContentModuleRegister);

@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { TypeModal } from "../../enums";
-import { COMPONENT_MAP, TARGET_MODAL } from "../../constants";
+import { COMPONENT_MAP } from "../../constants";
 
 export interface IModalAuth {
   type: TypeModal;
@@ -13,7 +13,14 @@ export interface IModalAuth {
   backModal?: TypeModal;
 }
 
-const initialState: IModalAuth = { ...TARGET_MODAL.login, isOpenModal: false };
+const initialState: IModalAuth = {
+  type: TypeModal.login,
+  componentKey: "ContentModuleLogin",
+  title: "Chào mừng trở lại.",
+  textFooter:
+    'Nhấp vào "Đăng nhập" để đồng ý với Điều khoản dịch vụ của Penguin và xác nhận rằng Chính sách quyền riêng tư của Penguin áp dụng cho bạn.',
+  isOpenModal: false,
+};
 
 export const modalAuthSlice = createSlice({
   name: "modalAuth",

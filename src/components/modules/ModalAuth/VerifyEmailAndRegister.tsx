@@ -18,7 +18,7 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Box, Typography } from "@mui/material";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -26,13 +26,11 @@ interface IVerifyEmailAndRegister {
   otpCode: string;
   password: string;
   passwordConfirm: string;
-  lastName: string;
-  firstName: string;
+  username: string;
 }
 
 const schema = yup.object({
-  lastName: yup.string().required("Họ is required"),
-  firstName: yup.string().required("Tên is required"),
+  username: yup.string().required("Username is required"),
   otpCode: yup.string().required("Code is required"),
   password: yup.string().required("Password is required"),
   passwordConfirm: yup
@@ -55,8 +53,7 @@ const VerifyEmailAndRegister = () => {
       otpCode: "",
       password: "",
       passwordConfirm: "",
-      lastName: "",
-      firstName: "",
+      username: "",
     },
   });
   const { handleOpenSnackbar } = useSnackbar();
@@ -137,37 +134,21 @@ const VerifyEmailAndRegister = () => {
               <Box>
                 <Controller
                   control={control}
-                  name="lastName"
+                  name="username"
                   render={({ field }) => (
                     <InputForm
                       size="small"
-                      id="lastName"
-                      label="Họ"
-                      helperText={errors.lastName?.message}
-                      error={!!errors.lastName}
+                      id="username"
+                      label="Username"
+                      helperText={errors.username?.message}
+                      error={!!errors.username}
                       sx={{ width: 270 }}
                       {...field}
                     />
                   )}
                 />
               </Box>
-              <Box>
-                <Controller
-                  control={control}
-                  name="firstName"
-                  render={({ field }) => (
-                    <InputForm
-                      size="small"
-                      id="firstName"
-                      label="Tên"
-                      helperText={errors.firstName?.message}
-                      error={!!errors.firstName}
-                      sx={{ width: 270 }}
-                      {...field}
-                    />
-                  )}
-                />
-              </Box>
+
               <Box>
                 <Controller
                   control={control}
@@ -249,4 +230,4 @@ const VerifyEmailAndRegister = () => {
   );
 };
 
-export default VerifyEmailAndRegister;
+export default memo(VerifyEmailAndRegister);

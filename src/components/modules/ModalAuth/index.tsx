@@ -17,7 +17,6 @@ const ModalAuth = () => {
       targetModal.type === TARGET_MODAL.verifyEmailAndRegister.type ||
       targetModal.type === TARGET_MODAL.verifyEmailAndResetPassword.type
     ) {
-      console.log(1);
       dispatch(
         setBackModalAndModalConfirm({
           backModal: undefined,

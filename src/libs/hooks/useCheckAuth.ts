@@ -5,12 +5,11 @@ import { useAppDispatch } from "../store/hooks";
 import { IUser, setProfile } from "../store/slices/profileSlice";
 
 const useCheckAuth = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isInitialized, setIsInitialized] = useState(false);
   const dispatch = useAppDispatch();
 
   useLayoutEffect(() => {
     const handleCheckAuth = async () => {
-      setIsLoading(true);
       const res = await fetchApi(callGetProfile);
       if (res?.data) {
         const payload: IUser = {
@@ -29,13 +28,12 @@ const useCheckAuth = () => {
         dispatch(setProfile(payload));
       }
 
-      setIsLoading(false);
+      setIsInitialized(true);
     };
 
     handleCheckAuth();
   }, [dispatch]);
 
-  return { isLoading };
+  return { isInitialized };
 };
-
 export default useCheckAuth;

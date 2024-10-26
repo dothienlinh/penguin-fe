@@ -70,3 +70,14 @@ export const COMPONENT_MAP = {
   VerifyEmailAndRegister,
   VerifyEmailAndResetPassword,
 };
+
+export const PUBLIC_ROUTES = ["/auth/signin", "/"];
+
+export const PRIVATE_ROUTES = [
+  "/admin",
+  "/new-story",
+  "/me/settings",
+  /^\/@[a-zA-Z0-9_]+$/,
+];
+
+export const ALL_ROUTES = [...PUBLIC_ROUTES, ...PRIVATE_ROUTES];

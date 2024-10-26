@@ -18,7 +18,7 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Box, Typography } from "@mui/material";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -206,4 +206,4 @@ const VerifyEmailAndResetPassword = () => {
   );
 };
 
-export default VerifyEmailAndResetPassword;
+export default memo(VerifyEmailAndResetPassword);
