@@ -1,5 +1,5 @@
 import { TypographyAuth } from "@/components/ui/Typography";
-import { TARGET_MODAL, COMPONENT_MAP } from "@/libs/constants";
+import { COMPONENT_MAP, TARGET_MODAL } from "@/libs/constants";
 import { useAppDispatch, useAppSelector } from "@/libs/store/hooks";
 import {
   setBackModalAndModalConfirm,
@@ -8,21 +8,21 @@ import {
 } from "@/libs/store/slices/modalAuthSlice";
 import CloseIcon from "@mui/icons-material/Close";
 import {
+  Box,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   IconButton,
   Paper,
   Typography,
-  Box,
-  DialogContentText,
-  DialogContent,
-  Dialog,
-  DialogTitle,
-  DialogActions,
 } from "@mui/material";
 import { motion } from "framer-motion";
-import { FC, memo, MouseEvent, forwardRef } from "react";
+import { FC, forwardRef, memo, MouseEvent } from "react";
 
 interface LayoutModalAuthProps {
-  handleClose: () => void;
+  handleClose?: () => void;
 }
 
 const LayoutModalAuth: FC<LayoutModalAuthProps> = forwardRef(
@@ -34,7 +34,7 @@ const LayoutModalAuth: FC<LayoutModalAuthProps> = forwardRef(
 
     const handleBackdropClick = (e: MouseEvent<HTMLDivElement>) => {
       if (e.target === e.currentTarget) {
-        handleClose();
+        handleClose?.();
       }
     };
 
@@ -73,7 +73,7 @@ const LayoutModalAuth: FC<LayoutModalAuthProps> = forwardRef(
           })
         );
       } else {
-        handleClose();
+        handleClose?.();
       }
     };
 
@@ -110,12 +110,14 @@ const LayoutModalAuth: FC<LayoutModalAuthProps> = forwardRef(
                 gap: 10,
               }}
             >
-              <IconButton
-                onClick={handleClickIconClose}
-                sx={{ position: "absolute", top: 10, right: 10 }}
-              >
-                <CloseIcon />
-              </IconButton>
+              {handleClose && (
+                <IconButton
+                  onClick={handleClickIconClose}
+                  sx={{ position: "absolute", top: 10, right: 10 }}
+                >
+                  <CloseIcon />
+                </IconButton>
+              )}
 
               <Typography
                 variant="h6"

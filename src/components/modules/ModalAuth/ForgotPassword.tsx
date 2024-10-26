@@ -12,7 +12,7 @@ import { setEmail, setModalAuth } from "@/libs/store/slices/modalAuthSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { Box, Typography } from "@mui/material";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -147,4 +147,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default memo(ForgotPassword);

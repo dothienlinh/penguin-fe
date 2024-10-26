@@ -21,8 +21,7 @@ export interface ILoginBody {
 }
 
 export interface IBodyVerifyEmailAndRegister {
-  lastName: string;
-  firstName: string;
+  username: string;
   email: string;
   password: string;
   passwordConfirm: string;
@@ -30,10 +29,7 @@ export interface IBodyVerifyEmailAndRegister {
 }
 
 export interface IBodyVerifyEmailAndResetPassword
-  extends Omit<
-    IBodyVerifyEmailAndRegister,
-    "lastName" | "firstName" | "passwordConfirm"
-  > {
+  extends Omit<IBodyVerifyEmailAndRegister, "passwordConfirm" | "username"> {
   confirmPassword: string;
 }
 

@@ -1,6 +1,5 @@
-import Link from "@/components/common/Link";
+import Redirect from "@/components/modules/NotFound/Redirect";
 import { Box, Typography } from "@mui/material";
-import React from "react";
 
 const NotFound = () => {
   return (
@@ -19,7 +18,7 @@ const NotFound = () => {
         <Typography variant="body1">
           Could not find requested resource
         </Typography>
-        <Link href="/">Return Home</Link>
+        <Redirect />
       </Box>
     </>
   );
